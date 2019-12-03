@@ -10,26 +10,31 @@ final class Module
    */
   private $mass;
 
-  public function __construct(int $mass)
+  private function __construct(int $mass)
   {
+    $this->assertModuleHasMass($mass);
     $this->mass = $mass;
   }
 
-  public function fuelRequiredToLaunch()
+  public static function ofMass($mass)
   {
-    $fuelRequiredByModuleMass = floor($this->mass / 3) - 2;
-    $fuelRequiredByModuleMass += $this->fuelRequiredByFuel($fuelRequiredByModuleMass);
-    return $fuelRequiredByModuleMass;
+    return new self($mass);
   }
 
-  private function fuelRequiredByFuel(int $fuelRequired)
+  public function fuelNeeded()
   {
-    $additionalFuelRequired = 0;
-    $remainingFuelRequired = $fuelRequired;
-    while (($remainingFuelRequired = floor($remainingFuelRequired / 3) - 2) > 0){
-      $additionalFuelRequired += $remainingFuelRequired;
+    return Fuel::fuelNeededByMass($this->mass);
+  }
+
+  private function assertModuleHasMass(int $mass)
+  {
+    if ($mass <= 0) {
+      throw new ModuleHasNotMassException();
     }
-    return $additionalFuelRequired;
   }
 
+  public function mass()
+  {
+    return $this->mass;
+  }
 }
