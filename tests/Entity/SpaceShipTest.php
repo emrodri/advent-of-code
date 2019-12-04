@@ -30,15 +30,4 @@ class SpaceShipTest extends TestCase
     $spaceShip = new SpaceShip([$module]);
     $this->assertEquals($spaceShip->fuelRequiredToLaunch(), 50346);
   }
-
-  public function testFuelNeededInPuzzleTest()
-  {
-    $inputs = file(dirname(__FILE__) . "/Files/inputs.txt");
-    $modules = [];
-    foreach ($inputs as $mass) {
-      $modules[] = Module::ofMass(intval($mass));
-    }
-    $spaceShip = new SpaceShip($modules);
-    $this->assertEquals($spaceShip->fuelRequiredToLaunch(), 4900568);
-  }
 }
