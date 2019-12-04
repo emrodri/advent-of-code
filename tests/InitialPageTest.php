@@ -1,8 +1,10 @@
 <?php
 // tests/InitialPageTest.php
-namespace Tests\TDDIntro;
+namespace Tests\AdventOfCode;
 
-class InitialPageTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class InitialPageTest extends TestCase
 {
   public function testInitialList()
   {

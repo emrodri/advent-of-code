@@ -1,9 +1,9 @@
 <?php
 
 namespace Tests\AdventOfCode;
-use TDDIntro\Domain\Entity\Module;
-use TDDIntro\Domain\Entity\ModuleHasNotMassException;
-use TDDIntro\Domain\Entity\SpaceShip;
+use AdventOfCode\Domain\Entity\Module;
+use AdventOfCode\Domain\Entity\ModuleHasNotMassException;
+use AdventOfCode\Domain\Entity\SpaceShip;
 
 class ModuleTest extends \PHPUnit\Framework\TestCase
 {

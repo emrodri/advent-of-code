@@ -2,12 +2,11 @@
 
 namespace Tests\AdventOfCode;
 
-use TDDIntro\Domain\Entity\Computer;
-use TDDIntro\Domain\Entity\IntCodeProgram;
-use TDDIntro\Domain\Entity\Module;
-use TDDIntro\Domain\Entity\SpaceShip;
+use AdventOfCode\Domain\Entity\Module;
+use AdventOfCode\Domain\Entity\SpaceShip;
+use PHPUnit\Framework\TestCase;
 
-class SpaceShipTest extends \PHPUnit\Framework\TestCase
+class SpaceShipTest extends TestCase
 {
 
 

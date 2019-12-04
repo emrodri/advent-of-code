@@ -2,10 +2,10 @@
 
 namespace Tests\AdventOfCode;
 
-use TDDIntro\Domain\Entity\Computer;
-use TDDIntro\Domain\Entity\IntCodeProgram;
-use TDDIntro\Domain\Entity\Module;
-use TDDIntro\Domain\Entity\SpaceShip;
+use AdventOfCode\Domain\Entity\Computer;
+use AdventOfCode\Domain\Entity\IntCodeProgram;
+use AdventOfCode\Domain\Entity\Module;
+use AdventOfCode\Domain\Entity\SpaceShip;
 
 class ComputerTest extends \PHPUnit\Framework\TestCase
 {
@@ -28,7 +28,7 @@ class ComputerTest extends \PHPUnit\Framework\TestCase
   {
     $memory = "1,9,10,3,2,3,11,0,99,30,40,50";
     $computer = Computer::createFromMemory($memory);
-    $this->assertEquals($computer->runIntCodeProgram(), "3500");
+    $this->assertEquals("3500", $computer->runIntCodeProgram());
   }
 
   public function testLaunchIntCode4()
@@ -41,13 +41,5 @@ class ComputerTest extends \PHPUnit\Framework\TestCase
   {
     $computer = Computer::createFromMemory("1,1,1,4,99,5,6,0,99");
     $this->assertEquals($computer->runIntCodeProgram(), "30");
-  }
-
-  public function testLaunchIntCodeFile()
-  {
-    $inputs = file(dirname(__FILE__) . "/Files/inputs_day_2.txt");
-    $instructions = implode(",", $inputs);
-    $computer = Computer::createFromMemory($instructions);
-    $this->assertEquals($computer->runIntCodeProgram(), "3058646");
   }
 }

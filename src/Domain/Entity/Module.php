@@ -1,6 +1,6 @@
 <?php
 
-namespace TDDIntro\Domain\Entity;
+namespace AdventOfCode\Domain\Entity;
 
 
 final class Module

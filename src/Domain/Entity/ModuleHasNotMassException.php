@@ -1,7 +1,7 @@
 <?php
 
 
-namespace TDDIntro\Domain\Entity;
+namespace AdventOfCode\Domain\Entity;
 
 
 use Exception;
