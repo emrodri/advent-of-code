@@ -1,9 +1,9 @@
 <?php
-require '../config.php';
+require __DIR__.'/../config.php';
 
 use AdventOfCode\Domain\Entity\Computer;
 
-$inputs = file(dirname(__FILE__) . "/inputs_day_2.txt");
+$inputs = file(dirname(__FILE__) . "/inputs.txt");
 $memory = implode(",", $inputs);
 $computer = Computer::createFromMemoryString($memory);
 

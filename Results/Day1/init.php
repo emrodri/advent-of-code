@@ -3,7 +3,7 @@
 use AdventOfCode\Domain\Entity\Module;
 use AdventOfCode\Domain\Entity\SpaceShip;
 
-require '../config.php';
+require __DIR__.'/../config.php';
 
 
 $inputs = file(dirname(__FILE__) . "/inputs.txt");
