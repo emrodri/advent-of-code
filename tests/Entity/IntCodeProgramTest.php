@@ -7,7 +7,7 @@ use AdventOfCode\Domain\Entity\IntCodeProgram;
 use AdventOfCode\Domain\Entity\Module;
 use AdventOfCode\Domain\Entity\SpaceShip;
 
-class ComputerTest extends \PHPUnit\Framework\TestCase
+class IntCodeProgramTest extends \PHPUnit\Framework\TestCase
 {
 
 
@@ -42,4 +42,5 @@ class ComputerTest extends \PHPUnit\Framework\TestCase
     $computer = Computer::createFromMemoryString("1,1,1,4,99,5,6,0,99");
     $this->assertEquals($computer->runIntCodeProgram(), "30");
   }
+
 }

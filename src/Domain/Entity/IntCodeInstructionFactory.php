@@ -9,23 +9,48 @@ class IntCodeInstructionFactory
   const OP_CODE_FINISHED = 99;
   const OP_CODE_ADD = 1;
   const OP_CODE_MULTIPLY = 2;
-  const OPERATION_CODE_POSITION = 0;
-  const FIRST_OPERATOR_POSITION = 1;
-  const SECOND_OPERATOR_POSITION = 2;
-  const RESULT_POSITION = 3;
+  const OP_CODE_STORE = 3;
+  const OP_CODE_OUTPUT = 4;
 
-  public static function fromMemory($memory)
+
+  public static function fromMemory($memory, $pointer)
   {
-    $opCode = $memory[self::OPERATION_CODE_POSITION];
+    $opCode = intval(substr($memory[$pointer], -2, 2));
+    $param1Mode = self::getParamMode($memory[$pointer],1);
+    $param2Mode = self::getParamMode($memory[$pointer],2);
     switch ($opCode) {
       case self::OP_CODE_ADD:
-        return new IntCodeInstructionAdd($memory[self::FIRST_OPERATOR_POSITION], $memory[self::SECOND_OPERATOR_POSITION], $memory[self::RESULT_POSITION]);
+        $param1 = ($param1Mode === 0 ) ? $memory[$memory[$pointer + 1]]: $memory[$pointer + 1];
+        $param2 = ($param2Mode === 0 ) ? $memory[$memory[$pointer + 2]]: $memory[$pointer + 2];
+        $resultPosition = $memory[$pointer + 3];
+        return new IntCodeInstructionAdd($param1, $param2, $resultPosition);
       case self::OP_CODE_MULTIPLY:
-        return new IntCodeInstructionMultiply($memory[self::FIRST_OPERATOR_POSITION], $memory[self::SECOND_OPERATOR_POSITION], $memory[self::RESULT_POSITION]);
+        $param1 = ($param1Mode === 0 ) ? $memory[$memory[$pointer + 1]]: $memory[$pointer + 1];
+        $param2 = ($param2Mode === 0 ) ? $memory[$memory[$pointer + 2]]: $memory[$pointer + 2];
+      $resultPosition = $memory[$pointer + 3];
+        return new IntCodeInstructionMultiply($param1, $param2, $resultPosition);
+      case self::OP_CODE_STORE:
+        $param = $memory[$pointer + 1];
+        return new IntCodeInstructionStore($param);
+      case self::OP_CODE_OUTPUT:
+        $param = ($param1Mode === 0 ) ? $memory[$memory[$pointer + 1]]: $memory[$pointer + 1];
+        return new IntCodeInstructionOutput($param);
       case self::OP_CODE_FINISHED:
         return new IntCodeInstructionFinish();
       default:
         return null;
     }
+  }
+
+
+  private static function getParamMode($memory, $parameter): int
+  {
+    $memory = $memory / 100;
+    if ($parameter == 1 && $memory % 10 > 0) {
+      return 1;
+    } else if ($parameter == 2 && ($memory / 10) % 10 > 0) {
+      return 1;
+    }
+    return 0;
   }
 }

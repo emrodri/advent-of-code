@@ -30,4 +30,12 @@ final class Computer
     $program[2] = $verb;
     return IntCodeProgram::fromMemoryState($program)->run();
   }
+
+  public function runTestProgram($input)
+  {
+    $program = IntCodeProgram::fromMemoryState($this->memory);
+    $program->setInput($input);
+    $program->run();
+    return $program->output();
+  }
 }

@@ -4,16 +4,19 @@ namespace AdventOfCode\Domain\Entity;
 
 final class IntCodeProgram
 {
-  const INSTRUCTION_LENGTH = 4;
   const RESULT_POSITION = 0;
   const INITIAL_POSITION = 0;
 
   private $memory;
   private $instructionPointer = self::INITIAL_POSITION;
+  private $input;
+  private $output;
+
 
   public function __construct(array $memoryState)
   {
     $this->memory = $memoryState;
+    $this->input = null;
   }
 
   public static function fromMemoryState(array $memoryState)
@@ -25,16 +28,27 @@ final class IntCodeProgram
   {
     $instruction = $this->nextInstructionFromMemory();
     while (!$instruction->isFinishInstruction()) {
-      $instruction->runIn($this->memory);
+      $this->output = $instruction->runIn($this->memory, $this->input);
       $instruction = $this->nextInstructionFromMemory();
     }
+    $this->setInput(null);
     return $this->memory[self::RESULT_POSITION];
+  }
+
+  public function setInput($input)
+  {
+    $this->input = $input;
+  }
+
+  public function output()
+  {
+    return $this->output;
   }
 
   private function nextInstructionFromMemory()
   {
-    $instructionMemory = array_slice($this->memory, $this->instructionPointer, self::INSTRUCTION_LENGTH);
-    $this->instructionPointer += self::INSTRUCTION_LENGTH;
-    return IntCodeInstructionFactory::fromMemory($instructionMemory);
+    $instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
+    $this->instructionPointer += $instruction->memorySize();
+    return $instruction;
   }
 }

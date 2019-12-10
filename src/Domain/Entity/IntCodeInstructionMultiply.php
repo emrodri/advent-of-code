@@ -6,26 +6,31 @@ namespace AdventOfCode\Domain\Entity;
 
 class IntCodeInstructionMultiply extends IntCodeInstruction
 {
-
-  private $firstOperatorAddress;
-  private $secondOperatorAddress;
+  const MEMORY_SIZE = 4;
+  private $firstOperator;
+  private $secondOperator;
   private $resultAddress;
 
-  public function __construct(string $firstOperatorAddress, string $secondOperatorAddress, string $resultAddress)
+  public function __construct(string $firstOperator, string $secondOperator, string $resultAddress)
   {
-    $this->firstOperatorAddress = $firstOperatorAddress;
-    $this->secondOperatorAddress = $secondOperatorAddress;
+    $this->firstOperator = $firstOperator;
+    $this->secondOperator = $secondOperator;
     $this->resultAddress = $resultAddress;
   }
 
-  function runIn(array &$memory): array
+  function runIn(array &$memory)
   {
-    $memory[$this->resultAddress] = $memory[$this->firstOperatorAddress] * $memory[$this->secondOperatorAddress];
-    return $memory;
+    $memory[$this->resultAddress] = intval($this->firstOperator) * intval($this->secondOperator);
+    return null;
   }
 
   function isFinishInstruction(): bool
   {
     return false;
+  }
+
+  function memorySize(): int
+  {
+    return self::MEMORY_SIZE;
   }
 }
