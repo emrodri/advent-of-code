@@ -8,7 +8,7 @@ class IntCodeInstructionFinish extends IntCodeInstruction
 {
   const MEMORY_SIZE = 1;
 
-  public function runIn(array &$memory)
+  public function runIn(array &$memory, $input = null)
   {
     return null;
   }
@@ -18,8 +18,4 @@ class IntCodeInstructionFinish extends IntCodeInstruction
     return true;
   }
 
-  function memorySize(): int
-  {
-    return self::MEMORY_SIZE;
-  }
 }

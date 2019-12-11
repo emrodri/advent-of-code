@@ -27,8 +27,4 @@ class IntCodeInstructionStore extends IntCodeInstruction
     return false;
   }
 
-  function memorySize(): int
-  {
-    return self::MEMORY_SIZE;
-  }
 }

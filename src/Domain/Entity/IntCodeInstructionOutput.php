@@ -8,17 +8,17 @@ class IntCodeInstructionOutput extends IntCodeInstruction
 {
   const MEMORY_SIZE = 2;
 
-  private $output;
+  private $outputPosition;
 
 
-  public function __construct(string $output)
+  public function __construct(string $outputPosition)
   {
-    $this->output = $output;
+    $this->outputPosition = $outputPosition;
   }
 
-  function runIn(array &$memory)
+  function runIn(array &$memory, $input = null)
   {
-    return $this->output;
+    return $this->outputPosition;
   }
 
   function isFinishInstruction(): bool
@@ -26,8 +26,5 @@ class IntCodeInstructionOutput extends IntCodeInstruction
     return false;
   }
 
-  function memorySize(): int
-  {
-    return self::MEMORY_SIZE;
-  }
+
 }

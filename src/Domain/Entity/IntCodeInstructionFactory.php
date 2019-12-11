@@ -11,30 +11,41 @@ class IntCodeInstructionFactory
   const OP_CODE_MULTIPLY = 2;
   const OP_CODE_STORE = 3;
   const OP_CODE_OUTPUT = 4;
+  const OP_CODE_JUMP_IF_TRUE = 5;
+  const OP_CODE_JUMP_IF_FALSE = 6;
+  const OP_CODE_LESS_THAN = 7;
+  const OP_CODE_EQUALS = 8;
 
 
   public static function fromMemory($memory, $pointer)
   {
+
     $opCode = intval(substr($memory[$pointer], -2, 2));
-    $param1Mode = self::getParamMode($memory[$pointer], 1);
-    $param2Mode = self::getParamMode($memory[$pointer], 2);
     switch ($opCode) {
       case self::OP_CODE_ADD:
-        $param1 = self::getParamValue($memory, $memory[$pointer + 1], $param1Mode);
-        $param2 = self::getParamValue($memory, $memory[$pointer + 2], $param2Mode);
-        $resultPosition = $memory[$pointer + 3];
+        list($param1, $param2, $resultPosition) = self::getParamsForMethod($memory, $pointer);
         return new IntCodeInstructionAdd($param1, $param2, $resultPosition);
       case self::OP_CODE_MULTIPLY:
-        $param1 = self::getParamValue($memory, $memory[$pointer + 1], $param1Mode);
-        $param2 = self::getParamValue($memory, $memory[$pointer + 2], $param2Mode);
-        $resultPosition = $memory[$pointer + 3];
+        list($param1, $param2, $resultPosition) = self::getParamsForMethod($memory, $pointer);
         return new IntCodeInstructionMultiply($param1, $param2, $resultPosition);
       case self::OP_CODE_STORE:
-        $param = $memory[$pointer + 1];
-        return new IntCodeInstructionStore($param);
+        $storePosition = $memory[$pointer + 1];
+        return new IntCodeInstructionStore($storePosition);
       case self::OP_CODE_OUTPUT:
-        $param = self::getParamValue($memory, $memory[$pointer + 1], $param1Mode);
-        return new IntCodeInstructionOutput($param);
+        list($param1) = self::getParamsForMethod($memory, $pointer);
+        return new IntCodeInstructionOutput($param1);
+      case self::OP_CODE_JUMP_IF_TRUE:
+        list($param1, $param2) = self::getParamsForMethod($memory, $pointer);
+        return new IntCodeInstructionJumpIfTrue($param1, $param2);
+      case self::OP_CODE_JUMP_IF_FALSE:
+        list($param1, $param2) = self::getParamsForMethod($memory, $pointer);
+        return new IntCodeInstructionJumpIfFalse($param1, $param2);
+      case self::OP_CODE_LESS_THAN:
+        list($param1, $param2, $resultPosition) = self::getParamsForMethod($memory, $pointer);
+        return new IntCodeInstructionLessThan($param1, $param2, $resultPosition);
+      case self::OP_CODE_EQUALS:
+        list($param1, $param2, $resultPosition) = self::getParamsForMethod($memory, $pointer);
+        return new IntCodeInstructionEquals($param1, $param2, $resultPosition);
       case self::OP_CODE_FINISHED:
         return new IntCodeInstructionFinish();
       default:
@@ -56,6 +67,16 @@ class IntCodeInstructionFactory
 
   private static function getParamValue($memory, $position, int $paramMode)
   {
-    return ($paramMode === 0) ? $memory[$position] : $position;
+    return ($paramMode === 0 && isset($memory[$position])) ? $memory[$position] : $position;
+  }
+
+  private static function getParamsForMethod($memory, $pointer): array
+  {
+    $param1Mode = self::getParamMode($memory[$pointer], 1);
+    $param2Mode = self::getParamMode($memory[$pointer], 2);
+    $param1 = isset($memory[$pointer + 1]) ? self::getParamValue($memory, $memory[$pointer + 1], $param1Mode) : null;
+    $param2 = isset($memory[$pointer + 2]) ? self::getParamValue($memory, $memory[$pointer + 2], $param2Mode) : null;
+    $resultPosition = isset($memory[$pointer + 3]) ? $memory[$pointer + 3] : null;
+    return array($param1, $param2, $resultPosition);
   }
 }

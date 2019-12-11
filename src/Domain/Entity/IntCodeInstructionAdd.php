@@ -18,7 +18,7 @@ class IntCodeInstructionAdd extends IntCodeInstruction
     $this->resultAddress = $resultAddress;
   }
 
-  function runIn(array &$memory)
+  function runIn(array &$memory, $input = null)
   {
     $memory[$this->resultAddress] = intval($this->firstOperator) + intval($this->secondOperator);
     return null;
@@ -27,10 +27,5 @@ class IntCodeInstructionAdd extends IntCodeInstruction
   function isFinishInstruction(): bool
   {
     return false;
-  }
-
-  function memorySize(): int
-  {
-    return self::MEMORY_SIZE;
   }
 }

@@ -2,6 +2,8 @@
 
 namespace AdventOfCode\Domain\Entity;
 
+use Exception;
+
 final class IntCodeProgram
 {
   const RESULT_POSITION = 0;
@@ -9,14 +11,17 @@ final class IntCodeProgram
 
   private $memory;
   private $instructionPointer = self::INITIAL_POSITION;
+  /** @var IntCodeInstruction $instruction */
+  private $instruction = null;
   private $input;
-  private $output;
+  private $outputs;
 
 
   public function __construct(array $memoryState)
   {
     $this->memory = $memoryState;
     $this->input = null;
+    $this->outputs = [];
   }
 
   public static function fromMemoryState(array $memoryState)
@@ -26,10 +31,14 @@ final class IntCodeProgram
 
   public function run()
   {
-    $instruction = $this->nextInstructionFromMemory();
-    while (!$instruction->isFinishInstruction()) {
-      $this->output = $instruction->runIn($this->memory, $this->input);
-      $instruction = $this->nextInstructionFromMemory();
+    $this->outputs = [];
+    $this->nextInstructionFromMemory();
+    while (!$this->instruction->isFinishInstruction()) {
+      $instructionOutput = $this->instruction->runIn($this->memory, $this->input);
+      if ($instructionOutput !== null) {
+        $this->outputs[] = $instructionOutput;
+      }
+      $this->nextInstructionFromMemory();
     }
     $this->setInput(null);
     return $this->memory[self::RESULT_POSITION];
@@ -42,13 +51,18 @@ final class IntCodeProgram
 
   public function output()
   {
-    return $this->output;
+    $diagnosticCode = array_pop($this->outputs);
+    foreach ($this->outputs as $output) {
+      if ($output > 0) {
+        throw new Exception("Error en Debug Code");
+      }
+    }
+    return $diagnosticCode;
   }
 
   private function nextInstructionFromMemory()
   {
-    $instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
-    $this->instructionPointer += $instruction->memorySize();
-    return $instruction;
+    $this->instructionPointer = ($this->instruction) ? $this->instruction->nextInstructionPointer($this->instructionPointer) : 0;
+    $this->instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
   }
 }
