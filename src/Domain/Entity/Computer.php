@@ -18,22 +18,14 @@ final class Computer
     return new self($memory);
   }
 
-  public function runIntCodeProgram()
+  public function runGravityAssistProgram()
   {
-    return IntCodeProgram::fromMemoryState($this->memory)->run();
-  }
-
-  public function runIntCodeProgramWithInputs(int $noun, int $verb)
-  {
-    $program = $this->memory;
-    $program[1] = $noun;
-    $program[2] = $verb;
-    return IntCodeProgram::fromMemoryState($program)->run();
+    return GravityAssistProgram::fromMemoryState($this->memory)->run();
   }
 
   public function runTestProgram($input)
   {
-    $program = IntCodeProgram::fromMemoryState($this->memory);
+    $program = TestDiagnosticProgram::fromMemoryState($this->memory);
     $program->setInput($input);
     $program->run();
     return $program->output();

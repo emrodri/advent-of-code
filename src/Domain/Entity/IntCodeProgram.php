@@ -4,51 +4,41 @@ namespace AdventOfCode\Domain\Entity;
 
 use Exception;
 
-final class IntCodeProgram
+abstract class IntCodeProgram
 {
   const RESULT_POSITION = 0;
   const INITIAL_POSITION = 0;
 
-  private $memory;
-  private $instructionPointer = self::INITIAL_POSITION;
+  protected $memory;
+  protected $instructionPointer = self::INITIAL_POSITION;
   /** @var IntCodeInstruction $instruction */
-  private $instruction = null;
-  private $input;
-  private $outputs;
+  protected $instruction = null;
+  protected $inputs;
+  protected $outputs;
 
 
-  public function __construct(array $memoryState)
+  protected function __construct(array $memoryState)
   {
     $this->memory = $memoryState;
-    $this->input = null;
+    $this->inputs = [];
     $this->outputs = [];
   }
 
   public static function fromMemoryState(array $memoryState)
   {
-    return new self($memoryState);
+    return new static($memoryState);
   }
 
-  public function run()
-  {
-    $this->outputs = [];
-    $this->nextInstructionFromMemory();
-    while (!$this->instruction->isFinishInstruction()) {
-      $instructionOutput = $this->instruction->runIn($this->memory, $this->input);
-      if ($instructionOutput !== null) {
-        $this->outputs[] = $instructionOutput;
-      }
-      $this->nextInstructionFromMemory();
-    }
-    $this->setInput(null);
-    return $this->memory[self::RESULT_POSITION];
-  }
+  public function run(){}
 
   public function setInput($input)
   {
-    $this->input = $input;
+    $this->inputs[] = $input;
   }
 
+  /**
+   * @throws Exception
+   */
   public function output()
   {
     $diagnosticCode = array_pop($this->outputs);
@@ -60,7 +50,7 @@ final class IntCodeProgram
     return $diagnosticCode;
   }
 
-  private function nextInstructionFromMemory()
+  protected function nextInstructionFromMemory()
   {
     $this->instructionPointer = ($this->instruction) ? $this->instruction->nextInstructionPointer($this->instructionPointer) : 0;
     $this->instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
