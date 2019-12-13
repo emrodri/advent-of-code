@@ -30,4 +30,12 @@ final class Computer
     $program->run();
     return $program->output();
   }
+
+  public function runProgramAlarm(int $noun, int $verb)
+  {
+    $program = $this->memory;
+    $program[0]=$noun;
+    $program[1]=$verb;
+    return GravityAssistProgram::fromMemoryState($program)->run();
+  }
 }
