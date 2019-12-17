@@ -3,6 +3,11 @@
 
 namespace AdventOfCode\Domain\Entity;
 
+use AdventOfCode\Domain\Entity\Programs\AmplifierControllerSoftware;
+use AdventOfCode\Domain\Entity\Programs\GravityAssistSoftware;
+use AdventOfCode\Domain\Entity\Programs\TestDiagnosticSoftware;
+use Exception;
+
 final class Computer
 {
   private $memory;
@@ -20,12 +25,12 @@ final class Computer
 
   public function runGravityAssistProgram()
   {
-    return GravityAssistProgram::fromMemoryState($this->memory)->run();
+    return GravityAssistSoftware::fromMemoryState($this->memory)->run();
   }
 
   public function runTestProgram($input)
   {
-    $program = TestDiagnosticProgram::fromMemoryState($this->memory);
+    $program = TestDiagnosticSoftware::fromMemoryState($this->memory);
     $program->setInput($input);
     $program->run();
     return $program->output();
@@ -36,6 +41,17 @@ final class Computer
     $program = $this->memory;
     $program[0]=$noun;
     $program[1]=$verb;
-    return GravityAssistProgram::fromMemoryState($program)->run();
+    return GravityAssistSoftware::fromMemoryState($program)->run();
   }
+
+
+  public function runAmplifierProgram(array $input)
+  {
+    $program = AmplifierControllerSoftware::fromMemoryState($this->memory);
+    $program->setInput($input[0]);
+    $program->setInput($input[1]);
+    $program->run();
+    return $program->output();
+  }
+
 }

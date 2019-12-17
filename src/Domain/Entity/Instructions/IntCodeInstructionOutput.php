@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Instructions;
 
 
 class IntCodeInstructionOutput extends IntCodeInstruction
@@ -13,6 +13,7 @@ class IntCodeInstructionOutput extends IntCodeInstruction
 
   public function __construct(string $outputPosition)
   {
+    // echo "OUTPUTS => ".$outputPosition.PHP_EOL;
     $this->outputPosition = $outputPosition;
   }
 

@@ -1,10 +1,10 @@
 <?php
 
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Instructions;
 
 
-class IntCodeInstructionLessThan extends IntCodeInstruction
+class IntCodeInstructionEquals extends IntCodeInstruction
 {
   const MEMORY_SIZE = 4;
   private $firstOperator;
@@ -19,9 +19,9 @@ class IntCodeInstructionLessThan extends IntCodeInstruction
     $this->resultAddress = $resultAddress;
   }
 
-  function runIn(array &$memory, int $input)
+  function runIn(array &$memory, $input)
   {
-    $memory[$this->resultAddress] = (intval($this->firstOperator) < intval($this->secondOperator)) ? 1 : 0;
+    $memory[$this->resultAddress] = (intval($this->firstOperator) === intval($this->secondOperator)) ? 1 : 0;
   }
 
   function isFinishInstruction(): bool

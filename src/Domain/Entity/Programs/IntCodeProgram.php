@@ -1,7 +1,9 @@
 <?php
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Programs;
 
+use AdventOfCode\Domain\Entity\Instructions\IntCodeInstruction;
+use AdventOfCode\Domain\Entity\Instructions\IntCodeInstructionFactory;
 use Exception;
 
 abstract class IntCodeProgram
@@ -29,7 +31,7 @@ abstract class IntCodeProgram
     return new static($memoryState);
   }
 
-  public function run(){}
+  abstract function run();
 
   public function setInput($input)
   {
@@ -53,6 +55,8 @@ abstract class IntCodeProgram
   protected function nextInstructionFromMemory()
   {
     $this->instructionPointer = ($this->instruction) ? $this->instruction->nextInstructionPointer($this->instructionPointer) : 0;
+    /*echo "Next instruction pointer  =>" . $this->instructionPointer . PHP_EOL;
+    echo "Memory  =>" . implode(',', $this->memory) . PHP_EOL;*/
     $this->instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
   }
 }

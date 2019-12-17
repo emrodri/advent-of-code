@@ -1,8 +1,10 @@
 <?php
 
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Instructions;
 
+
+use Exception;
 
 class IntCodeInstructionFactory
 {
@@ -21,6 +23,7 @@ class IntCodeInstructionFactory
   {
 
     $opCode = intval(substr($memory[$pointer], -2, 2));
+    // echo "OPERACION =>" . $opCode . PHP_EOL;
     switch ($opCode) {
       case self::OP_CODE_ADD:
         list($param1, $param2, $resultPosition) = self::getParamsForMethod($memory, $pointer);
@@ -49,7 +52,7 @@ class IntCodeInstructionFactory
       case self::OP_CODE_FINISHED:
         return new IntCodeInstructionFinish();
       default:
-        return null;
+        throw new Exception("Instruction not recognized => " . $opCode);
     }
   }
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Instructions;
 
 
 class IntCodeInstructionStore extends IntCodeInstruction
@@ -25,6 +25,10 @@ class IntCodeInstructionStore extends IntCodeInstruction
   function isFinishInstruction(): bool
   {
     return false;
+  }
+
+  public function needInput(){
+    return true;
   }
 
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Programs;
 
-final class GravityAssistProgram extends IntCodeProgram
+final class GravityAssistSoftware extends IntCodeProgram
 {
   public function run()
   {

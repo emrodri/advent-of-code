@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Instructions;
 
 
 class IntCodeInstructionAdd extends IntCodeInstruction

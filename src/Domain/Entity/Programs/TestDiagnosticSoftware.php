@@ -1,8 +1,8 @@
 <?php
 
-namespace AdventOfCode\Domain\Entity;
+namespace AdventOfCode\Domain\Entity\Programs;
 
-final class TestDiagnosticProgram extends IntCodeProgram
+final class TestDiagnosticSoftware extends IntCodeProgram
 {
   public function run()
   {
