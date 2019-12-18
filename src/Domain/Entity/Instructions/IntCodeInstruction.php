@@ -17,5 +17,9 @@ abstract class IntCodeInstruction
     return $actualPointer + static::MEMORY_SIZE;
   }
 
+  public function memorySize(){
+    return static::MEMORY_SIZE;
+  }
+
 
 }

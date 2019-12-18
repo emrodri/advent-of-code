@@ -4,25 +4,30 @@
 namespace AdventOfCode\Domain\Entity;
 
 
+use AdventOfCode\Domain\Entity\Programs\AmplifierControllerSoftware;
+
 class Amplifier
 {
   private $phase;
-  private $computer;
+  private $program;
 
-  private function __construct(Computer $computer, $phase)
+  private function __construct(AmplifierControllerSoftware $program, $phase)
   {
-    $this->computer = $computer;
+    $this->program = $program;
     $this->phase = $phase;
+    $this->program->setInput($this->phase);
   }
 
-  public static function installOn(Computer $computer, $phase)
+  public static function installOnShip(AmplifierControllerSoftware $program, int $phase)
   {
-    return new self($computer,$phase);
+    return new self($program, $phase);
   }
 
   public function run($inputSignal)
   {
-    return $this->computer->runAmplifierProgram([$this->phase, $inputSignal]);
+    $this->program->setInput($inputSignal);
+    $this->program->run();
+    return $this->program->output();
   }
 
 }

@@ -54,9 +54,11 @@ abstract class IntCodeProgram
 
   protected function nextInstructionFromMemory()
   {
+    // echo "Actual pointer  =>" . $this->instructionPointer . PHP_EOL;
     $this->instructionPointer = ($this->instruction) ? $this->instruction->nextInstructionPointer($this->instructionPointer) : 0;
-    /*echo "Next instruction pointer  =>" . $this->instructionPointer . PHP_EOL;
-    echo "Memory  =>" . implode(',', $this->memory) . PHP_EOL;*/
+    // echo "Next instruction pointer  =>" . $this->instructionPointer . PHP_EOL;
+    /* echo "Memory  =>" . implode(',', $this->memory) . PHP_EOL; */
     $this->instruction = IntCodeInstructionFactory::fromMemory($this->memory, $this->instructionPointer);
+    // echo "Instruction  =>" . get_class($this->instruction). PHP_EOL;
   }
 }
